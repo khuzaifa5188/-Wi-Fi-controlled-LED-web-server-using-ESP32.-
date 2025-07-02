@@ -1,0 +1,25 @@
+module clock_divider #(
+    parameter DIV_FACTOR = 2  // Must be >=2
+)(
+    input wire clk_in,     // Input clock
+    input wire reset,      // Active-high synchronous reset
+    output reg clk_out     // Divided clock output
+);
+
+    reg [$clog2(DIV_FACTOR)-1:0] counter;
+
+    always @(posedge clk_in) begin
+        if (reset) begin
+            counter <= 0;
+            clk_out <= 0;
+        end else begin
+            if (counter == (DIV_FACTOR/2 - 1)) begin
+                clk_out <= ~clk_out;
+                counter <= 0;
+            end else begin
+                counter <= counter + 1;
+            end
+        end
+    end
+
+endmodule
