@@ -35,3 +35,141 @@ elif choice == '4':
     print("Result:", divide(num1, num2))
 else:
     print("Invalid input")
+//Gui caluculator
+import tkinter as tk
+
+def click(event):
+    global expression
+    expression += str(event.widget.cget("text"))
+    input_text.set(expression)
+
+def clear():
+    global expression
+    expression = ""
+    input_text.set("")
+
+def calculate():
+    global expression
+    try:
+        result = str(eval(expression))
+        input_text.set(result)
+        expression = result
+    except:
+        input_text.set("Error")
+        expression = ""
+
+# Main window
+root = tk.Tk()
+root.title("Simple Calculator")
+root.geometry("300x400")
+
+expression = ""
+input_text = tk.StringVar()
+
+# Entry widget
+input_frame = tk.Frame(root)
+input_frame.pack()
+
+input_field = tk.Entry(input_frame, textvariable=input_text, font=('arial',18,'bold'), bd=10, insertwidth=2, width=14, borderwidth=4)
+input_field.grid(row=0, column=0)
+input_field.pack(ipady=10)
+
+# Buttons
+btns_frame = tk.Frame(root)
+btns_frame.pack()
+
+buttons = [
+    ['7', '8', '9', '/'],
+    ['4', '5', '6', '*'],
+    ['1', '2', '3', '-'],
+    ['0', '.', '=', '+']
+]
+
+for row in buttons:
+    btn_row = tk.Frame(btns_frame)
+    btn_row.pack(expand=True, fill='both')
+    for btn_text in row:
+        btn = tk.Button(btn_row, text=btn_text, font=('arial',18,'bold'), height=2, width=4)
+        btn.pack(side='left', expand=True, fill='both')
+        if btn_text == "=":
+            btn.config(command=calculate)
+        elif btn_text == "C":
+            btn.config(command=clear)
+        else:
+            btn.bind("<Button-1>", click)
+
+# Add clear button separately
+clear_btn = tk.Button(root, text="C", font=('arial',18,'bold'), height=2, width=12, command=clear)
+clear_btn.pack(expand=True, fill='both')
+
+root.mainloop()
+//scientific calculator
+import tkinter as tk
+import math
+
+def click(event):
+    global expression
+    text = event.widget.cget("text")
+    if text == "=":
+        try:
+            result = str(eval(expression))
+            input_text.set(result)
+            expression = result
+        except:
+            input_text.set("Error")
+            expression = ""
+    elif text == "C":
+        expression = ""
+        input_text.set("")
+    elif text in ("sin", "cos", "tan", "sqrt"):
+        try:
+            if text == "sin":
+                result = str(math.sin(math.radians(float(expression))))
+            elif text == "cos":
+                result = str(math.cos(math.radians(float(expression))))
+            elif text == "tan":
+                result = str(math.tan(math.radians(float(expression))))
+            elif text == "sqrt":
+                result = str(math.sqrt(float(expression)))
+            input_text.set(result)
+            expression = result
+        except:
+            input_text.set("Error")
+            expression = ""
+    else:
+        expression += text
+        input_text.set(expression)
+
+# Main window
+root = tk.Tk()
+root.title("Scientific Calculator")
+root.geometry("350x500")
+root.configure(bg="lightgray")
+
+expression = ""
+input_text = tk.StringVar()
+
+# Entry
+entry = tk.Entry(root, textvariable=input_text, font=('arial',20,'bold'), bd=10, insertwidth=2, width=15, borderwidth=4, relief='ridge', justify='right')
+entry.pack(pady=20, padx=10)
+
+# Buttons
+buttons = [
+    ['7','8','9','/'],
+    ['4','5','6','*'],
+    ['1','2','3','-'],
+    ['0','.','=','+'],
+    ['sin','cos','tan','sqrt'],
+    ['C']
+]
+
+for row in buttons:
+    btn_row = tk.Frame(root, bg="lightgray")
+    btn_row.pack(expand=True, fill='both')
+    for btn_text in row:
+        btn = tk.Button(btn_row, text=btn_text, font=('arial',16,'bold'), height=2, width=6, relief='groove')
+        btn.pack(side='left', expand=True, fill='both', padx=2, pady=2)
+        btn.bind("<Button-1>", click)
+
+root.mainloop()
+
