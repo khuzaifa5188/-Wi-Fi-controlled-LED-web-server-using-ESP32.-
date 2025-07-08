@@ -172,4 +172,99 @@ for row in buttons:
         btn.bind("<Button-1>", click)
 
 root.mainloop()
+\\speech recognization 
+import speech_recognition as sr
+import pyttsx3
+
+# Initialize recognizer and engine
+recognizer = sr.Recognizer()
+engine = pyttsx3.init()
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+def listen():
+    with sr.Microphone() as source:
+        print("Listening...")
+        recognizer.adjust_for_ambient_noise(source)  # better accuracy
+        audio = recognizer.listen(source)
+        try:
+            print("Recognizing...")
+            command = recognizer.recognize_google(audio)
+            print(f"You said: {command}")
+            return command.lower()
+        except sr.UnknownValueError:
+            print("Sorry, I could not understand.")
+            speak("Sorry, I could not understand.")
+        except sr.RequestError:
+            print("Network error.")
+            speak("Network error.")
+    return ""
+
+# Main loop
+while True:
+    command = listen()
+    if "hello" in command:
+        speak("Hello! How can I help you?")
+    elif "your name" in command:
+        speak("I am your Python voice assistant.")
+    elif "stop" in command or "exit" in command:
+        speak("Goodbye!")
+        break
+    elif command:
+        speak("You said " + command)
+//Face detection code
+import cv2
+
+# Load the pre-trained Haar cascade for face detection
+face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+
+# Start video capture from your webcam
+cap = cv2.VideoCapture(0)
+
+while True:
+    # Read each frame
+    ret, frame = cap.read()
+    if not ret:
+        break
+
+    # Convert to grayscale for face detection
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    # Detect faces
+    faces = face_cascade.detectMultiScale(gray, scaleFactor=1.3, minNeighbors=5)
+
+    # Draw rectangles around faces
+    for (x, y, w, h) in faces:
+        cv2.rectangle(frame, (x,y), (x+w, y+h), (0,255,0), 2)
+
+    # Show the output
+    cv2.imshow('Face Detection', frame)
+
+    # Exit on pressing 'q'
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# Release resources
+cap.release()
+cv2.destroyAllWindows()
+//WhatsApp auto-messenge
+import pywhatkit
+
+# Parameters:
+# phone number with country code
+phone = "+923001234567"  # replace with your target number
+
+# message to send
+message = "Hello from Python! 🚀"
+
+# time in 24-hour format
+hour = 15  # means 3 PM
+minute = 30
+
+# send the message
+pywhatkit.sendwhatmsg(phone, message, hour, minute)
+
+print("Message scheduled successfully!")
 
