@@ -268,3 +268,74 @@ pywhatkit.sendwhatmsg(phone, message, hour, minute)
 
 print("Message scheduled successfully!")
 
+import pyttsx3
+import random
+import string
+import matplotlib.pyplot as plt
+import qrcode
+import time
+
+def text_to_speech():
+    engine = pyttsx3.init()
+    text = input("Enter text to speak: ")
+    engine.say(text)
+    engine.runAndWait()
+
+def generate_password():
+    length = int(input("Enter password length: "))
+    password = ''.join(random.choices(string.ascii_letters + string.digits + string.punctuation, k=length))
+    print("Generated password:", password)
+
+def plot_graph():
+    x = [1, 2, 3, 4, 5]
+    y = [10, 14, 18, 21, 27]
+    plt.plot(x, y, marker='o')
+    plt.title("Simple Line Graph")
+    plt.xlabel("X-axis")
+    plt.ylabel("Y-axis")
+    plt.grid()
+    plt.show()
+
+def create_qr():
+    data = input("Enter data or URL to encode in QR: ")
+    qr = qrcode.make(data)
+    filename = input("Enter filename to save (like myqr.png): ")
+    qr.save(filename)
+    print(f"QR code saved as {filename}")
+
+def countdown_timer():
+    seconds = int(input("Enter countdown time in seconds: "))
+    for i in range(seconds, 0, -1):
+        print(f"Countdown: {i}")
+        time.sleep(1)
+    print("Time's up!")
+
+def main_menu():
+    while True:
+        print("\n==== Python Multi-Tool ====")
+        print("1. Text to Speech")
+        print("2. Generate Random Password")
+        print("3. Plot a Simple Graph")
+        print("4. Generate QR Code")
+        print("5. Countdown Timer")
+        print("6. Exit")
+        choice = input("Enter choice (1-6): ")
+        
+        if choice == '1':
+            text_to_speech()
+        elif choice == '2':
+            generate_password()
+        elif choice == '3':
+            plot_graph()
+        elif choice == '4':
+            create_qr()
+        elif choice == '5':
+            countdown_timer()
+        elif choice == '6':
+            print("Goodbye!")
+            break
+        else:
+            print("Invalid choice. Try again.")
+
+# Run the program
+main_menu()
